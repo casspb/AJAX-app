@@ -4,6 +4,7 @@
   const hotspots = document.querySelectorAll(".Hotspot");
   const materialTemplate = document.querySelector("#material-template");
   const materialList = document.querySelector("#material-list");
+  const loader = document.querySelector("#loader");
 
   //This information needs to be removed then pulled with an AJAX Call using the Fetch API
   //this is the api url https://swiftpixel.com/earbud/api/infoboxes"
@@ -17,7 +18,7 @@
   //functions
   function loadInfoBoxes() {
     // Make AJAX call to the API
-    fetch("https://swiftpixel.com/earbud/api/infoboxe")
+    fetch("https://swiftpixel.com/earbud/api/infoboxes")
       .then(response => response.json())
       .then(infoBoxes => {
         console.log(infoBoxes);
@@ -52,31 +53,41 @@
   
   loadInfoBoxes();
 
-  function loadMaterialInfo (){
+  function loadMaterialInfo() {
+    loader.classList.remove("hidden");
+  
     fetch("https://swiftpixel.com/earbud/api/materials")
-    .then(response => response.json())
-    .then(materials => {
-      console.log(materials);
-      materials.forEach(material =>{ 
-
-           //clone the template 
-    const clone = materialTemplate.content.cloneNode(true);
-    const materialHeading = clone.querySelector(".material-heading");
-    materialHeading.textContent = material.heading;
-
-    const materialDescription = clone.querySelector(".material-description");
-    materialDescription.textContent = material.description; 
-    
-  materialList.appendChild(clone);
+      .then(response => response.json())
+      .then(materials => {
+        console.log(materials);
+  
+        // Clear existing content before adding new data
+        materialList.innerHTML = "";
+  
+        materials.forEach(material => {
+          const clone = materialTemplate.content.cloneNode(true);
+          const materialHeading = clone.querySelector(".material-heading");
+          materialHeading.textContent = material.heading;
+  
+          const materialDescription = clone.querySelector(".material-description");
+          materialDescription.textContent = material.description;
+  
+          materialList.appendChild(clone);
+        });
+  
+        // Hide the loader after data has been loaded
+        loader.classList.add("hidden");
       })
-
-    })
-
-   // .catch()
-    //create an error message to the user
-  // show that te material is loading 
-
+      .catch(error => {
+        console.log(error);
+        loader.classList.add("hidden");
+  
+        const errorMsg = document.createElement("p");
+        errorMsg.textContent = "Oops, something went wrong, please check your internet connection or try again later.";
+        materialList.appendChild(errorMsg);
+      });
   }
+  
   loadMaterialInfo();
 
   function showInfo() {

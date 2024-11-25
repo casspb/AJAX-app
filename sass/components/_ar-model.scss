@@ -1,4 +1,11 @@
   // Customize our own hotspot 
+  .hidden{
+    display: none;
+}
+
+#loader{
+  height: 100px;
+}
 
   model-viewer {
     width: auto;
