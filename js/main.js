@@ -17,7 +17,7 @@
   //functions
   function loadInfoBoxes() {
     // Make AJAX call to the API
-    fetch("https://swiftpixel.com/earbud/api/infoboxes")
+    fetch("https://swiftpixel.com/earbud/api/infoboxe")
       .then(response => response.json())
       .then(infoBoxes => {
         console.log(infoBoxes);
@@ -38,7 +38,15 @@
         });
       })
       .catch(error => {
-        console.error("Error loading info boxes:");
+        console.log(error);
+  
+        const errorMsg = document.createElement("p");
+        errorMsg.textContent = "Oops, it looks like something went wrong, please check your internet connection or try again later.";
+        const containers = document.querySelectorAll(".error-container");
+        
+        containers.forEach(container => {
+          container.appendChild(errorMsg.cloneNode(true));
+        });
       });
   }
   
