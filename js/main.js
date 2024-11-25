@@ -16,29 +16,32 @@
 
   //functions
   function loadInfoBoxes() {
-
-    //make AJAX call here
+    // Make AJAX call to the API
     fetch("https://swiftpixel.com/earbud/api/infoboxes")
-    .then(response => response.json())
-    .then(infoBoxes => {
-      console.log(infoBoxes);
-    })
-    .catch()
+      .then(response => response.json())
+      .then(infoBoxes => {
+        console.log(infoBoxes);
+  
+        infoBoxes.forEach((infoBox, index) => {
+          let selected = document.querySelector(`#hotspot-${index + 1}`);
 
+          const titleElement = document.createElement('h2');
+          titleElement.textContent = infoBox.heading;
+  
+          const textElement = document.createElement('p');
+          textElement.textContent = infoBox.description;
 
-    // infoBoxes.forEach((infoBox, index) => {
-    //   let selected = document.querySelector(`#hotspot-${index + 1}`);
+          selected.appendChild(titleElement);
+          selected.appendChild(textElement);
 
-    //   const titleElement = document.createElement('h2');
-    //   titleElement.textContent = infoBox.title;
-
-    //   const textElement = document.createElement('p');
-    //   textElement.textContent = infoBox.text;
-
-    //   selected.appendChild(titleElement);
-    //   selected.appendChild(textElement);
-    // });
+          
+        });
+      })
+      .catch(error => {
+        console.error("Error loading info boxes:");
+      });
   }
+  
   loadInfoBoxes();
 
   function loadMaterialInfo (){
